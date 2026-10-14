@@ -1,0 +1,14 @@
+node_modules
+.next
+.env*.local
+.env
+service-account*.json
+*.log
+.firebase
+.emulator-data
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+.vercel
+coverage
+*.tsbuildinfo

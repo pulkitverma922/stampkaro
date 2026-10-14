@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)", "Bash(npx shadcn@latest add *)", "Bash(npm i *)",
+      "Bash(git status)", "Bash(git diff *)", "Bash(git add *)", "Bash(git commit *)"
+    ],
+    "deny": ["Read(.env.local)", "Read(./service-account*.json)", "Bash(npx firebase deploy*)"]
+  }
+}

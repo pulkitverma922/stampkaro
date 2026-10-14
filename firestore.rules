@@ -1,0 +1,65 @@
+rules_version = '2';
+// Deny by default. Trusted writes (stamps, redemptions, stats, plans) happen ONLY via Admin SDK in /api.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function uid() { return request.auth.uid; }
+    function isAdmin() { return signedIn() && request.auth.token.role == 'admin'; }
+    function biz(bizId) { return get(/databases/$(database)/documents/businesses/$(bizId)).data; }
+    function isOwner(bizId) { return signedIn() && biz(bizId).ownerId == uid(); }
+    function isStaff(bizId) {
+      return signedIn() && exists(/databases/$(database)/documents/businesses/$(bizId)/staff/$(uid()));
+    }
+    function onlyChanges(keys) { return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys); }
+
+    match /users/{userId} {
+      allow read: if signedIn() && (uid() == userId || isAdmin());
+      allow update: if signedIn() && uid() == userId && onlyChanges(['displayName', 'phone', 'photoURL']);
+    }
+
+    match /businesses/{bizId} {
+      allow read: if true; // public profile (name, logo, reward) needed on scan & menu pages
+      allow update: if isOwner(bizId)
+        && onlyChanges(['name', 'logoUrl', 'brandColor', 'category', 'reward', 'rules', 'scratchConfig', 'updatedAt']);
+
+      match /branches/{branchId} {
+        allow read: if true;
+        allow update: if isOwner(bizId) && onlyChanges(['name', 'address', 'lat', 'lng', 'isActive']);
+        // create/delete via API (enforces maxBranches)
+      }
+      match /staff/{staffId} {
+        allow read: if isOwner(bizId) || (signedIn() && uid() == staffId);
+      }
+      match /menuCategories/{id} {
+        allow read: if true;
+        allow write: if isOwner(bizId);
+      }
+      match /menuItems/{id} {
+        allow read: if true;
+        allow write: if isOwner(bizId);
+      }
+      match /dailyStats/{day} {
+        allow read: if isOwner(bizId) || isStaff(bizId) || isAdmin();
+      }
+    }
+
+    match /qrCodes/{qrId} { allow read: if true; }
+    match /slugs/{slug}   { allow read: if true; }
+
+    match /cards/{cardId} {
+      allow read: if signedIn() && (resource.data.customerId == uid()
+        || isOwner(resource.data.bizId) || isStaff(resource.data.bizId) || isAdmin());
+    }
+    match /redemptions/{id} {
+      allow read: if signedIn() && (resource.data.customerId == uid()
+        || isOwner(resource.data.bizId) || isStaff(resource.data.bizId));
+    }
+    match /scratchCards/{id} {
+      allow read: if signedIn() && resource.data.customerId == uid();
+    }
+    match /scans/{id} {
+      allow read: if signedIn() && (isOwner(resource.data.bizId) || isAdmin());
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "indexes": [
+    { "collectionGroup": "cards", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "bizId", "order": "ASCENDING" }, { "fieldPath": "lastScanAt", "order": "DESCENDING" } ] },
+    { "collectionGroup": "cards", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "customerId", "order": "ASCENDING" }, { "fieldPath": "lastScanAt", "order": "DESCENDING" } ] },
+    { "collectionGroup": "redemptions", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "bizId", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" },
+      { "fieldPath": "createdAt", "order": "DESCENDING" } ] },
+    { "collectionGroup": "redemptions", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "cardId", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" } ] },
+    { "collectionGroup": "redemptions", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "bizId", "order": "ASCENDING" }, { "fieldPath": "code", "order": "ASCENDING" },
+      { "fieldPath": "status", "order": "ASCENDING" } ] },
+    { "collectionGroup": "scans", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "bizId", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" } ] },
+    { "collectionGroup": "scans", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "customerId", "order": "ASCENDING" }, { "fieldPath": "bizId", "order": "ASCENDING" },
+      { "fieldPath": "dayKey", "order": "ASCENDING" } ] },
+    { "collectionGroup": "menuItems", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "categoryId", "order": "ASCENDING" }, { "fieldPath": "order", "order": "ASCENDING" } ] },
+    { "collectionGroup": "scratchCards", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "customerId", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" } ] },
+    { "collectionGroup": "dailyStats", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "__name__", "order": "DESCENDING" } ] }
+  ],
+  "fieldOverrides": []
+}

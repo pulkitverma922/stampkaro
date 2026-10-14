@@ -1,0 +1,14 @@
+{
+  "//": "Merge these into package.json \"scripts\" after create-next-app",
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "deploy:rules": "firebase deploy --only firestore:rules,firestore:indexes",
+    "seed": "tsx scripts/seed.ts",
+    "set-admin": "tsx scripts/set-admin.ts"
+  }
+}
